@@ -1,8 +1,22 @@
 import streamlit as st
 import streamlit.components.v1 as components
 import json
-from streamlit_cookies_controller import CookieController
 import textwrap
+
+try:
+    from streamlit_cookies_controller import CookieController
+except ImportError:
+    class CookieController:
+        """공개 데모에서 사용하는 쿠키 비활성 fallback."""
+
+        def get(self, _key):
+            return None
+
+        def set(self, _key, _value, **_kwargs):
+            return None
+
+        def remove(self, _key):
+            return None
 
 # 쿠키 컨트롤러 초기화 (싱글톤 패턴처럼 세션 내 재사용 시도)
 if "cookie_controller" not in st.session_state:
