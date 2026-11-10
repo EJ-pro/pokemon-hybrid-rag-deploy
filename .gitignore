@@ -22,6 +22,8 @@ env/
 venv/
 .venv
 .streamlit/
+!frontend/.streamlit/
+!frontend/.streamlit/config.toml
 .claude/
 CLAUDE.md
 

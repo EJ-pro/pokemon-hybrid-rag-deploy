@@ -1,9 +1,8 @@
-import requests
 import streamlit as st
 import streamlit.components.v1 as _components
 
 from pokedex.constants import REGIONS, TYPE_ORDER, KO_TO_EN, EN_TO_KO
-from pokedex.api import fetch_abilities, load_type_icons, BACKEND_URL, API_V1_STR
+from pokedex.api import fetch_abilities, fetch_pokemon, load_type_icons
 from pokedex.logic import toggle_type, do_reset, load_more, select_region, handle_search
 from pokedex.styles import get_pokedex_styles, render_pokemon_card
 
@@ -163,11 +162,13 @@ def show():
         }
         if st.session_state.selected_types:
             params["types"] = [EN_TO_KO[en] for en in st.session_state.selected_types]
-        response = requests.get(f"{BACKEND_URL}{API_V1_STR}/", params=params)
-        if response.status_code == 200:
-            data = response.json()
+        data, is_demo = fetch_pokemon(params)
+        if data:
             pokemon_list = data.get("items", [])
             display_total = data.get("total", 0)
+
+            if is_demo:
+                st.caption("공개 데모 데이터로 표시 중 · AI 추천과 챗봇은 운영 백엔드 연결 시 사용할 수 있습니다.")
 
             if not pokemon_list:
                 st.warning("검색 결과가 없습니다.")
@@ -187,7 +188,5 @@ def show():
                     if st.button("더 보기", key="btn_load_more", on_click=load_more):
                         pass
                     _components.html(_INFINITE_SCROLL_JS, height=0)
-        else:
-            st.error(f"백엔드 서버와 통신할 수 없습니다. (Status: {response.status_code})")
     except Exception as e:
         st.error(f"데이터를 불러오는 중 오류가 발생했습니다: {e}")

@@ -2,6 +2,7 @@ import os
 import requests
 import json
 import streamlit as st
+from utils.demo_data import pokemon_list
 
 BACKEND_URL = os.environ.get("BACKEND_URL") or os.environ.get("BACKEND_API_URL") or "http://localhost:8000"
 API_V1_STR = "/api/v1/pokemon"
@@ -28,8 +29,8 @@ def load_pokemon_data():
     except Exception:
         pass
     
-    # Fallback data if API fails
-    return [{"id": 25, "name": "피카츄", "types": [{"slot": 1, "type_": {"id": 13, "name": "전기"}}]}]
+    # 공개 데모에서는 저장소에 포함된 관동 도감 데이터를 사용합니다.
+    return pokemon_list(limit=2000, max_id=151)["items"]
 
 def save_game_log(game_type, pokemon_id, is_correct, hint_used=False, wrong_answer_name=None, log_data=None):
     user = st.session_state.get("user")

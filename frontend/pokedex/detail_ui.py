@@ -1,12 +1,8 @@
-import os
-import requests
 import streamlit as st
 
+from pokedex.api import fetch_pokemon_detail
 from pokedex.detail_styles import get_detail_styles
 from pokedex.detail_helpers import type_badge_html, render_evo_node
-
-BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:8000")
-
 
 def show():
     query_params = st.query_params
@@ -22,9 +18,9 @@ def show():
 
     with st.spinner("데이터를 불러오는 중..."):
         try:
-            response = requests.get(f"{BACKEND_URL}/api/v1/pokemon/{pokemon_id}", timeout=5)
-            response.raise_for_status()
-            data = response.json()
+            data, is_demo = fetch_pokemon_detail(pokemon_id)
+            if not data:
+                raise ValueError("포켓몬을 찾을 수 없습니다.")
             if data.get("types"):
                 data["types"] = sorted(data["types"], key=lambda x: x.get("slot", 1))
             main_type = data["types"][0]["type_"]["name"] if data.get("types") else "노말"
@@ -33,20 +29,13 @@ def show():
             st.error(f"데이터를 불러오지 못했습니다: {e}")
             st.stop()
 
+    if is_demo:
+        st.caption("공개 데모 데이터로 표시 중 · 상세 설명과 진화 관계는 운영 DB 연결 시 모두 제공됩니다.")
+
     prev_data, next_data = None, None
     if pokemon_id > 1:
-        try:
-            r = requests.get(f"{BACKEND_URL}/api/v1/pokemon/{pokemon_id - 1}", timeout=3)
-            if r.ok:
-                prev_data = r.json()
-        except Exception:
-            pass
-    try:
-        r = requests.get(f"{BACKEND_URL}/api/v1/pokemon/{pokemon_id + 1}", timeout=3)
-        if r.ok:
-            next_data = r.json()
-    except Exception:
-        pass
+        prev_data, _ = fetch_pokemon_detail(pokemon_id - 1)
+    next_data, _ = fetch_pokemon_detail(pokemon_id + 1)
 
     name           = data.get("name", "Unknown")
     img_url        = data.get("image_url") or "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
