@@ -92,15 +92,6 @@ html, body, [data-testid="stAppViewContainer"], .stApp {{ margin: 0; padding: 0;
 .nav-right {{ display: flex; align-items: stretch; }}
 .nav-aux {{ display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 20px; color: #000 !important; text-decoration: none !important; border-left: 1px solid #eee; min-width: 80px; }}
 
-.pipigo-btn:active {{
-    transform: scale(0.96);
-    background: #1e4f8a; color: #ffffff !important;
-    border-radius: 50px !important; /* 원형 유지 강제 */
-}}
-.pipigo-btn:focus {{
-    outline: none !important;
-    border-radius: 50px !important;
-}}
 </style>
     """).strip()
     st.markdown(common_css + splash_html + nav_html, unsafe_allow_html=True)
