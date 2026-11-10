@@ -123,21 +123,6 @@ def get_home_html(bg: dict, chars: dict) -> str:
     </div>
 </div>
 
-<!-- Pipigo Extension -->
-<div class="full-section sec-pipigo reverse observer-target">
-    <div class="section-inner">
-        <div class="text-box reveal-right">
-            <div class="sec-badge">New Generation Tool</div>
-            <h2 class="sec-title">지능형 어시스턴트<br><b>피피고 (Pipigo)</b></h2>
-            <p class="sec-desc">당신의 웹 브라우저 속에 귀여운 포켓몬 파트너가 나타납니다!<br> 지금 바로 경험해 보세요.</p>
-            <a href="https://chromewebstore.google.com/search/%ED%94%BC%ED%94%BC%EA%B3%A0?hl=ko" target="_blank" class="cta-btn">웹 스토어에서 보기</a>
-        </div>
-        <div class="visual-box reveal-left">
-            <img src="{chars['pipigo']}" class="main-artwork" style="border-radius: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-        </div>
-    </div>
-</div>
-
 <div style="padding:50px 5% 60px; text-align:center; background:#000; color:rgba(255,255,255,0.3); font-size:13px; font-family:'Inter',sans-serif; letter-spacing:1px; border-top:1px solid rgba(255,255,255,0.03);">
     © 2026 POKÉMON AI ASSISTANT. ALL RIGHTS RESERVED.<br>
     <span style="display:inline-block; margin-top:10px; opacity:0.6;">새로운 시대를 탐험하는 트레이너를 위한 지능형 가이드 · Powered by Advanced AI</span>
